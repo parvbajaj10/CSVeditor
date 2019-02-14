@@ -1,78 +1,81 @@
+import java.io.*;
 import java.util.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-public class database
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
+class Database
 {
-   public static void main(String []args)
-   {
-       Scanner sc=new Scanner(System.in);
-       int ch,k;
-       while(true)
-       {
-           System.out.println("01. insert rows:"); // This option will ins
-           System.out.println("02. delete rows"); // This option will delete rows
-           System.out.println("03. select from the table"); // This option will display the table which we want to show
-	   System.out.println("04. show table in database"); // This option will tell us about the tables in the database
-           System.out.print("Enter Your Choice : ");
-           ch=sc.nextInt();
-           switch(ch)
-           {
-               case 1:
-                        System.out.print("enter the row you want to insert:"); //Enterting the details here
-			 
-    String csvfilepath = "C:\\Users\\bajaj\\Desktop\\project\\csvs";
-     try (PrintWriter writer = new PrintWriter(new File("example.csv"))) 
-    {
-
-      StringBuilder sb = new StringBuilder();
-      sb.append("id,"); // Serial No
-      sb.append(',');
-      sb.append("Name");// Name of the person
-      sb.append('\n');
-
-      sb.append("1"); // Prefed data
-      sb.append(',');
-      sb.append("Prashant Ghimire");
-      sb.append('\n');
-
-      writer.write(sb.toString());
-
-      System.out.println("done!");
-
-    } 
-      catch (FileNotFoundException e) 
-      {
-      System.out.println(e.getMessage());
+ public static void main(String ar[]) throws IOException
+ {
+  Scanner sc = new Scanner(System.in);
+  Database d=new Database(); 
+  System.out.println("Choose from the following commands:\n1.Insert\n2.Delete\n3.Select *\n4.Show Database");
+  int a;
+  a = sc.nextInt();
+ switch(a){
+    case 1: {
+         d.insert();
+         break;
     }
+    case 3:{
+      d.display(); 
+      break;
+    }
+    case 4:{ Stream<Path> files = Files.walk(Paths.get("/home/rajan/Downloads"));
+        
+        files.forEach(System.out::println);
+        
+        files.close();
+        break;
+  }
 
+  default:{}}}
+ public void display()
+ {
+  try
+  {
+  BufferedReader br=new BufferedReader(new FileReader("Database.csv"));
+  String s="";
+   while( (s=br.readLine()) !=null )
+   {
+    String data[]=new String[5];
+    data=s.split(",");
+    for(int i=0;i<5;i++)
+    {
+     System.out.print(data[i]+" ");
+    }
+    System.out.println();
+   }
+  }
+  catch(Exception e){}
   
+ }//
 
-                  
-                    case 2:  
-                        System.out.print("enter the row you want to delete"); // Deleting the row we want to
-                        break;
-               case 3: System.out.print("select from the table:"); // showing the table we want to
-	
-    break;
-
-
+ public void insert()
+ {
+Scanner sc = new Scanner(System.in);
+  //employee id first_name last_name salary location
+  System.out.println("Enter the ID of employee:");
+  String id=sc.nextLine();
+  System.out.println("Enter the first name of employee:");
+  String fn=sc.nextLine();
+  System.out.println("Enter the last name of employee:");
+  String ln=sc.nextLine();
+  System.out.println("Enter the salary of employee:");
+  String sl=sc.nextLine();
+  System.out.println("Enter the location of employee:");
+  String lc=sc.nextLine();
   
-		case 4: System.out.print("show table in database"); //It will be showing the table
-			break;
-  
-               default: System.out.println("Wrong Entry"); // The default statement that the program will be running
-             }
-           }
-         }
+  try
+  {
+   File f=new File("Database.csv");
+   PrintWriter pw=new PrintWriter(new FileOutputStream(f,true));
+   pw.append(id+","+fn+","+ln+","+sl+","+lc+"\n");
+   pw.close();
+  }
+  catch(Exception e){}
+ }
+ 
 }
-
-         
-       
-     
-
-            
-       
-   
-
-	
